@@ -1,0 +1,19 @@
+{
+  "name": "fullstack4",
+  "version": "1.0.0",
+  "description": "Viikko 4",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/epicharri/fullstack4.git"
+  },
+  "author": "Harri Kähkönen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/epicharri/fullstack4/issues"
+  },
+  "homepage": "https://github.com/epicharri/fullstack4#readme"
+}
