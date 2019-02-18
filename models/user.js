@@ -1,20 +1,9 @@
 const mongoose = require('mongoose')
+const uniqueValidator = require('mongoose-unique-validator')
 const config = require('./../utils/config')
 
 mongoose.set('useFindAndModify', true)
-
 const url = config.MONGODB_URI
-
-const blogSchema = mongoose.Schema({
-  title: String,
-  author: String,
-  url: String,
-  likes: Number,
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
-  }
-})
 
 mongoose
   .connect(url, {
@@ -25,15 +14,30 @@ mongoose
   })
   .catch(error => {
     console.log(
-      'Error connection to MongoDB:', error)
+      'Error connection to MongoDB:',
+      error
+    )
   })
 
-const Blog = mongoose.model(
-  'Blog',
-  blogSchema
-)
+const userSchema = mongoose.Schema({
+  username: {
+    type: String,
+    minLength: 3,
+    unique: true,
+    required: true
+  },
+  name: String,
+  passWordHash: String,
+  blogs: [
+    {
+      type:
+        mongoose.Schema.Types.ObjectId,
+      ref: 'Blog'
+    }
+  ]
+})
 
-blogSchema.set('toJSON', {
+userSchema.set('toJSON', {
   transform: (
     document,
     returnedObject
@@ -42,10 +46,13 @@ blogSchema.set('toJSON', {
       returnedObject._id
     delete returnedObject._id
     delete returnedObject.__v
+    delete returnedObject.passWordHash
   }
 })
 
+userSchema.plugin(uniqueValidator)
+
 module.exports = mongoose.model(
-  'Blog',
-  blogSchema
+  'User',
+  userSchema
 )
